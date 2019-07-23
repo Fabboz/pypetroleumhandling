@@ -229,8 +229,9 @@ function overrides.HAB(blist)
 	end
 end
 
---add 50 hot-air ingredient, output +2
-function overrides.hotairrecipes()
+--add 50 hot-air ingredient, reduce ingredients by set %
+function overrides.hotairrecipes(recipepercenttable)
+log(serpent.block(recipepercenttable))
 --gather recipes for the advanced-foundry
 local recipes = table.deepcopy(data.raw.recipe)
 local afrecipes = {}
@@ -247,135 +248,144 @@ local altrec = 0
 			table.insert(afrecipesnames,recipe.name)
 		end
 	end
+
 --cycle thru afrecipes to make changes
 	for _,recipe in pairs(afrecipes) do
 		if not hab[recipe.name] then
+		--log(recipe.name)
+		--log(serpent.block(recipe))
 		afrcount=afrcount+1
 		--add ingredient
 		if recipe.normal == nil and recipe.expensive == nil then
-			if recipe.ingredients[1] ~= nil then
-				if recipe.ingredients[1].name == nil then
-					local ing = recipe.ingredients
-					recipe.ingredients = {}
-					table.insert(recipe.ingredients, {type = "item", name = ing[1][1], amount = ing[1][2]})
-					if data.raw.item["solid-hot-air"] ~= nil then
-						table.insert(recipe.ingredients,{type="item",name="solid-hot-air",amount=50})
-					else
-						table.insert(recipe.ingredients,{type = "fluid", name = "hot-air", amount = 50})
-					end
-				elseif recipe.ingredients[1].name then
-					if data.raw.item["solid-hot-air"] ~= nil then
-						table.insert(recipe.ingredients,{type="item",name="solid-hot-air",amount=50})
-					else
-						table.insert(recipe.ingredients,{type = "fluid", name = "hot-air", amount = 50})
-					end
+			
+			local ingredients = recipe.ingredients
+			recipe.ingredients = {}
+			
+			for i, ing in pairs(ingredients) do
+			
+				if ing.name == nil then
+				
+					local formating = ing
+					ing = {type = "item", name = formating[1], amount = formating[2]}
+					
+					local modamount = ing.amount - math.floor(ing.amount * recipepercenttable[recipe.name])
+					
+					--log(modamount)
+					
+					ing.amount = modamount
+					
+					--log(serpent.block(ing))
+					
+				else
+				
+					local modamount = ing.amount - math.floor(ing.amount * recipepercenttable[recipe.name])
+					
+					--log(modamount)
+					
+					ing.amount = modamount
+					
+					--log(serpent.block(ing))
+					
 				end
-			elseif recipe.ingredients[2] ~= nil then
-				if recipe.ingredients[2].name == nil then
-					local ing = recipe.ingredients
-					recipe.ingredients = {}
-					table.insert(recipe.ingredients, {type = "item", name = ing[2][1], amount = ing[2][2]})
-					if data.raw.item["solid-hot-air"] ~= nil then
-						table.insert(recipe.ingredients,{type="item",name="solid-hot-air",amount=50})
-					else
-						table.insert(recipe.ingredients,{type = "fluid", name = "hot-air", amount = 50})
-					end
-				elseif recipe.ingredients[2].name then
-					if data.raw.item["solid-hot-air"] ~= nil then
-						table.insert(recipe.ingredients,{type="item",name="solid-hot-air",amount=50})
-					else
-						table.insert(recipe.ingredients,{type = "fluid", name = "hot-air", amount = 50})
-					end
-				end
+				
+				table.insert(recipe.ingredients, ing)
+				
 			end
-			if type(recipe.result) == "string" then
-				local res = recipe.result
-				recipe.result=nil
-				recipe.results={{type="item",name=res,amount=3}}
-			elseif recipe.results then
-				if recipe.results[1].name == nil then
-					local res = recipe.results
-					recipe.results = {}
-					table.insert(recipe.results,{type = "item", name = res[1][1], amount = (res[1][2] + 2)})
-				elseif recipe.results[1].name then
-					--log(serpent.block(recipe.results))
-					if recipe.results[1].amount ~= nil then
-						local resnum = recipe.results[1].amount + 2
-						recipe.results[1].amount = resnum
-					elseif recipe.results[1].amount_max ~= nil then
-						local resnum = recipe.results[1].amount_max + 2
-						recipe.results[1].amount_max = resnum
-					end
-				end
-			end
+			
+			--log(serpent.block(recipe.ingredients))
+			
+			table.insert(recipe.ingredients, {type = "fluid", name = "hot-air", amount = 50})
+			
 		end
+		
+		--log(serpent.block(recipe))
+
 		if recipe.normal or recipe.expensive then
 			if recipe.normal then
-			--log(serpent.block(recipe.normal))
-				if recipe.normal.ingredients[1] ~= nil then
-					if recipe.normal.ingredients[1].name == nil then
-						local ing = recipe.normal.ingredients
-						recipe.normal.ingredients = {}
-						table.insert(recipe.normal.ingredients, {type = "item", name = ing[1][1], amount = ing[1][2]})
-						if data.raw.item["solid-hot-air"] ~= nil then
-							table.insert(recipe.normal.ingredients,{type="item",name="solid-hot-air",amount=50})
-						else
-							table.insert(recipe.normal.ingredients,{type = "fluid", name = "hot-air", amount = 50})
-						end
+			
+				local ingredients = recipe.normal.ingredients
+				recipe.normal.ingredients = {}
+				
+				for i, ing in pairs(ingredients) do
+				
+					if ing.name == nil then
+					
+						local formating = ing
+						ing = {type = "item", name = formating[1], amount = formating[2]}
+						
+						local modamount = ing.amount - math.floor(ing.amount * recipepercenttable[recipe.name])
+						
+						--log(modamount)
+						
+						ing.amount = modamount
+						
+						--log(serpent.block(ing))
+						
 					else
-						if data.raw.item["solid-hot-air"] ~= nil then
-							table.insert(recipe.normal.ingredients,{type="item",name="solid-hot-air",amount=50})
-						else
-							table.insert(recipe.normal.ingredients,{type = "fluid", name = "hot-air", amount = 50})
-						end
+					
+						local modamount = ing.amount - math.floor(ing.amount * recipepercenttable[recipe.name])
+						
+						--log(modamount)
+						
+						ing.amount = modamount
+						
+						--log(serpent.block(ing))
+						
 					end
+					
+					table.insert(recipe.normal.ingredients, ing)
+					
 				end
-				if type(recipe.normal.result) == "string" then
-					local res = recipe.normal.result
-					recipe.normal.result = nil
-					local rtab = {type = "item", name = res, amount = 3}
-					recipe.normal.results={}
-					table.insert(recipe.normal.results,rtab)
-				end
-				if recipe.normal.results ~= nil then
-					local resamount = recipe.normal.results[1].amount
-					recipe.normal.results[1].amount = resamount + 2
-				end
+				
+				--log(serpent.block(recipe.ingredients))
+				
+				table.insert(recipe.normal.ingredients, {type = "fluid", name = "hot-air", amount = 50})
+				
 			end
+
 			if recipe.expensive then
-				if recipe.expensive.ingredients[1] ~= nil then
-					if recipe.expensive.ingredients[1].name == nil then
-						local ing = recipe.expensive.ingredients
-						recipe.expensive.ingredients = {}
-						table.insert(recipe.expensive.ingredients, {type = "item", name = ing[1][1], amount = ing[1][2]})
-						if data.raw.item["solid-hot-air"] ~= nil then
-							table.insert(recipe.expensive.ingredients,{type="item",name="solid-hot-air",amount=50})
-						else
-							table.insert(recipe.expensive.ingredients,{type = "fluid", name = "hot-air", amount = 50})
-						end
+						
+				local ingredients = recipe.expensive.ingredients
+				recipe.expensive.ingredients = {}
+				
+				for i, ing in pairs(ingredients) do
+				
+					if ing.name == nil then
+					
+						local formating = ing
+						ing = {type = "item", name = formating[1], amount = formating[2]}
+						
+						local modamount = ing.amount - math.floor(ing.amount * recipepercenttable[recipe.name])
+						
+						--log(modamount)
+						
+						ing.amount = modamount
+						
+						--log(serpent.block(ing))
+						
 					else
-						if data.raw.item["solid-hot-air"] ~= nil then
-							table.insert(recipe.expensive.ingredients,{type="item",name="solid-hot-air",amount=50})
-						else
-							table.insert(recipe.expensive.ingredients,{type = "fluid", name = "hot-air", amount = 50})
-						end
+					
+						local modamount = ing.amount - math.floor(ing.amount * recipepercenttable[recipe.name])
+						
+						--log(modamount)
+						
+						ing.amount = modamount
+						
+						--log(serpent.block(ing))
+						
 					end
+					
+					table.insert(recipe.expensive.ingredients, ing)
+					
 				end
-				if type(recipe.expensive.result) == "string" then
-					local res = recipe.expensive.result
-					recipe.expensive.result = nil
-					local rtab = {type = "item", name = res, amount = 3}
-					recipe.expensive.results={}
-					table.insert(recipe.expensive.results,rtab)
-					--log(serpent.block(rtab))
-					--log(serpent.block(recipe.expensive.results))
-				end
-				if recipe.expensive.results ~= nil then
-					local resamount = recipe.expensive.results[1].amount
-					recipe.expensive.results[1].amount = resamount + 2
-				end
+				
+				--log(serpent.block(recipe.ingredients))
+				
+				table.insert(recipe.expensive.ingredients, {type = "fluid", name = "hot-air", amount = 50})
+				
 			end
 		end
+
 		--find tech unlock of og recipe
 		local unlock
 		for _,t in pairs(data.raw.technology) do
@@ -474,5 +484,7 @@ for _, r in pairs(data.raw.recipe) do
 end
 ]]--
 end
+
+
 
 return overrides

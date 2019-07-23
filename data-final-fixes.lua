@@ -82,5 +82,41 @@ local hablist =
 }
 
 GIR.HAB(hablist)
+
+local recipepercentlist = 
+	{
+["iron-oxide"] = 0.25,
+["crushed-iron"] = 0.25,
+["crushed-copper"] = 0.25,
+["glass-1"] = 0.25,
+["glass-5"] = 0.25,
+["glass-6"] = 0.25,
+["aluminium-plate-1"] = 0.25,
+["chromium-plate-1"] = 0.25,
+["low-grade-smelting-copper"] = 0.25,
+["low-grade-smelting-iron"] = 0.25,
+["lead-plate-1"] = 0.25,
+["lead-plate-2"] = 0.25,
+["silver-plate-1"] = 0.25,
+["silver-plate-2"] = 0.25,
+["nexelit-plate-1"] = 0.25,
+["nexelit-plate-2"] = 0.25,
+["nickel-plate-1"] = 0.25,
+["nickel-plate-2"] = 0.25,
+["tin-plate-1"] = 0.25,
+["tin-plate-2"] = 0.25,
+["tin-plate-4"] = 0.25,
+["titanium-plate-1"] = 0.25,
+["titanium-plate-2"] = 0.25,
+["titanium-plate-4"] = 0.25,
+["zinc-plate-1"] = 0.25,
+["zinc-plate-2"] = 0.25,
+["zinc-plate-4"] = 0.25,
+["nexelit-plate"] = 0.25,
+["steel-plate2"] = 0.25,
+["copper-plate-2"] = 0.25,
+["iron-plate-2"] = 0.25
+	}
+
 --add hot air
-GIR.hotairrecipes()
+GIR.hotairrecipes(recipepercentlist)
