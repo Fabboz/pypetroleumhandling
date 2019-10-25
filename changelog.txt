@@ -1,4 +1,26 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.8
+  Changes:
+    - Added saline water for pumpjacks
+---------------------------------------------------------------------------------------------------
+Version: 1.4.7
+  Changes:
+    - fixed bug in pumpjacks and biter begone mod
+---------------------------------------------------------------------------------------------------
+Version: 1.4.6
+  Changes:
+    - fixed error with Natural gas to Methane when pyHT isnt active
+---------------------------------------------------------------------------------------------------
+Version: 1.4.5
+  Changes:
+    - Buff in pumpjacks
+    - Added Natural gas to Methane in pyHT
+    - Added hydrogen to oil burner
+---------------------------------------------------------------------------------------------------
+Version: 1.4.4
+  Changes:
+    - More adaptations
+---------------------------------------------------------------------------------------------------
 Version: 1.4.3
   Changes:
     - Adaptations for pyFE mk levels.
